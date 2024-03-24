@@ -23,7 +23,13 @@ Frontend:
 - Para el front con livewire 3 mostrar un listado de todos los pedidos en una tabla: order_ref, customer_name, total qty y mostrar la cantidad de productos por cada pedido.
 - Debajo de la tabla mostrar el último registro guardado en la tabla executed. Pedidos: {total_orders} - Total: {total_cost} - (created_at)
 
+## Intrucciones para reproducir este entorno
 
+- Clonar el repositorio
+- composer install
+- Crear el respectivo .env
+- Generar la key (php artisan key:generate)
+- Correr migracions (php artisan migrate)
+- Correr Seeders (php artisan db:seed --class=ProductSeeder & php artisan db:seed --class=OrderSeeder)
 
-Crear un mini instructivo de instalación con la configuración principal del .env
-Tener en cuenta que cada tarea debe ser registrada en una rama de git.
+Listo con esto nuestra app deberia estar funcionando. (Recordar que necesitamos redis y horizon corriendo)
