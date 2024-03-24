@@ -1,8 +1,8 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://gobeeping.com/wp-content/uploads/2021/01/cropped-beeping-logotipo_4-1.png" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><a href="https://gobeeping.com/" target="_blank"><img src="https://gobeeping.com/wp-content/uploads/2021/01/cropped-beeping-logotipo_4-1.png" width="400" alt="Beeping Logo"></a></p>
 
 ## Challenge PHP / Laravel para Beeping
 
-Requisitos:
+Desarrollo:
 
 - Instalar Nginx & MySQL/MariaDB & PHP 8.2 & Redis
 - Instalar Laravel 10
@@ -11,48 +11,19 @@ Requisitos:
 - Crear migraciones
 - Utilizar Seeders para llenar las tablas.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Backend:
 
-## Learning Laravel
+- Crear un endpoint /api/executed/create que guardará en la tabla executed  los datos recibidos desde el comando “execute:total”.
+- Hacer un comando de Laravel “execute:total” que encole mediante JOBS (redis) la siguiente tarea:
+- Calcular de forma asíncrona el coste total de todos los pedidos de la DB. Para calcular este coste hay que multiplicar cada order_line “qty” por el “product cost” (colocar un nombre a la queue). Una vez sumados todos los pedidos guardar el resultado en la tabla executed pegando al endpoint /api/executed/create
+- Crear un cron desde el schedule de Laravel que ejecute el comando “execute:total” cada 2 minutos.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Frontend:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- Para el front con livewire 3 mostrar un listado de todos los pedidos en una tabla: order_ref, customer_name, total qty y mostrar la cantidad de productos por cada pedido.
+- Debajo de la tabla mostrar el último registro guardado en la tabla executed. Pedidos: {total_orders} - Total: {total_cost} - (created_at)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Crear un mini instructivo de instalación con la configuración principal del .env
+Tener en cuenta que cada tarea debe ser registrada en una rama de git.
