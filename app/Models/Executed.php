@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Executed extends Model
 {
     use HasFactory;
+	protected $table = 'executed';
 
-    public function order_line()
-    {
-        return $this->hasMany(OrderLine::class);
-    }
+    protected $fillable = [
+        'total_orders',
+        'total_cost',
+    ];
+
 }
