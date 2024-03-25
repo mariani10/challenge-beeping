@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Order;
+use App\Models\OrderLine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -29,24 +30,17 @@ class CalcularCostoTotal implements ShouldQueue
      */
     public function handle(): void
     {
-        // Calculamos el costo total
-	$orders = Order::all();
-
-	$total_cost = 0;
-	$total_orders = $orders->count();
-
-	// Recorremos las ordenes y sus respectivas relaciones
-	foreach ($orders AS $order)
-	{
-		foreach ($order->order_line AS $orderLine)
-		{
-			$total_cost += $orderLine->qty * $orderLine->product->cost;
-		}
-	}
-	print_r($total_cost, $total_orders);
+	$resultado = OrderLine::with(['product', 'order'])
+    		->withCount('order')
+    		->get()
+    		->reduce(function ($carry, $orderLine) {
+			$carry['total_orders'] += $orderLine->order_count;
+			$carry['total_cost'] += $orderLine->qty * $orderLine->product->cost;
+			return $carry;
+		}, ['total_orders' => 0, 'total_cost' => 0]);
 
         // Guardamos en la tabla executed el costo total
-	$request = Request::create('/api/executed/create', 'POST', ['total_orders' => $total_orders, 'total_cost' => $total_cost]);
+	$request = Request::create('/api/executed/create', 'POST', $resultado);
 	app()->handle($request);
 	
     }

@@ -27,7 +27,12 @@
 	</div>
 
 	<div class="text-center text-sm text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
-		Pedidos: {{ $lastOrder ->total_orders }} - Total: ${{ $lastOrder ->total_cost }} - ({{ $lastOrder->created_at->format('d/m/Y h:i:s') }})
+		@isset($lastOrder)
+		Pedidos: {{ $lastOrder->total_orders }} - Total: ${{ $lastOrder->total_cost }} - ({{ $lastOrder->created_at->format('d/m/Y h:i:s') }})
+		@endisset
+		@empty($lastOrder)
+		Ejecutar horizon para mostrar total de pedidos y costo.		
+		@endempty
 	</div>
 </div>
 
