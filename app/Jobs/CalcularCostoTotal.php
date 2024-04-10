@@ -31,6 +31,23 @@ class CalcularCostoTotal implements ShouldQueue
     public function handle(): void
     {
 	$resultado = OrderLine::with(['product', 'order'])
+		->get()
+		->reduce(function ($carry, $orderLine) 
+		{
+        		// Miramos order y order line para ver si ya lo habiamos contado
+			if (!isset($carry['orders'][$orderLine->order_id])) 
+			{
+            			// Si no ha sido contada, incrementar el contador de órdenes
+				$carry['total_orders']++;
+
+				// Marcar la orden como contada para evitar contarla nuevamente
+				$carry['orders'][$orderLine->order_id] = true;
+			}
+			$carry['total_cost'] += $orderLine->qty * $orderLine->product->cost;
+			return $carry;
+    		}, ['total_orders' => 0, 'total_cost' => 0]);
+
+	/*$resultado = OrderLine::with(['product', 'order'])
     		->withCount('order')
     		->get()
     		->reduce(function ($carry, $orderLine) {
@@ -38,6 +55,8 @@ class CalcularCostoTotal implements ShouldQueue
 			$carry['total_cost'] += $orderLine->qty * $orderLine->product->cost;
 			return $carry;
 		}, ['total_orders' => 0, 'total_cost' => 0]);
+	*/
+
 
         // Guardamos en la tabla executed el costo total
 	$request = Request::create('/api/executed/create', 'POST', $resultado);

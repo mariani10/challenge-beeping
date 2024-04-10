@@ -19,4 +19,8 @@ class OrderLine extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+	public function orders() {
+    return $this->hasOne('App\Models\Order');
+	}
 }
